@@ -7,14 +7,14 @@ function Wallet({ address, setAddress, privateKey, setPrivateKey, publicKey, set
   async function onChange(evt) {
     const privateKey = evt.target.value;
     setPrivateKey(privateKey);
-    const publicKey = secp.getPublicKey(privateKey);
+    const publicKey = secp.secp256k1.getPublicKey(privateKey);
     setPublicKey(toHex(publicKey));
     const address = "0x" + toHex(keccak256(publicKey.slice(1).slice(-20)));
     console.log(address);
     if (address) {
       const {
         data: { balance },
-      } = await server.get(`balance/${address}`);
+      } = await server.get(`/balance/${address}`);
       setBalance(balance);
     } else {
       setBalance(0);
